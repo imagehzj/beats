@@ -2,6 +2,8 @@ FROM ttbb/base
 
 LABEL maintainer="shoothzj@gmail.com"
 
+ENV METRICBEAT_HOME /opt/sh/metricbeat
+
 ARG download=7.14.0-linux-x86_64
 
 RUN wget https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-$download.tar.gz && \
