@@ -18,36 +18,44 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Push to Docker Hub
+      - name: build push filebeat
         uses: docker/build-push-action@v2
         with:
           context: ./filebeat
           file: ./filebeat/Dockerfile
           push: true
           tags: ttbb/filebeat:nake
-      - name: Push to Docker Hub
+          platforms: linux/amd64,linux/arm64
+      - name: build push heartbeat
         uses: docker/build-push-action@v2
         with:
           context: ./heartbeat
           file: ./heartbeat/Dockerfile
           push: true
           tags: ttbb/heartbeat:nake
-      - name: Push to Docker Hub
+          platforms: linux/amd64,linux/arm64
+      - name: build push metricbeat
         uses: docker/build-push-action@v2
         with:
           context: ./metricbeat
           file: ./metricbeat/Dockerfile
           push: true
           tags: ttbb/metricbeat:nake
-      - name: Push to Docker Hub
+          platforms: linux/amd64,linux/arm64
+      - name: build push metricbeat
         uses: docker/build-push-action@v2
         with:
           context: ./packetbeat
           file: ./packetbeat/Dockerfile
           push: true
           tags: ttbb/packetbeat:nake
+          platforms: linux/amd64,linux/arm64

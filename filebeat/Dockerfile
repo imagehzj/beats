@@ -5,13 +5,21 @@ FROM ttbb/base
 
 LABEL maintainer="shoothzj@gmail.com"
 
+ARG TARGETARCH
+
 ENV FILEBEAT_HOME /opt/sh/filebeat
 
-ARG download=7.14.0-linux-x86_64
+ARG amd_download=7.15.2-linux-x86_64
 
-RUN wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-$download.tar.gz && \
-mkdir /opt/sh/filebeat && \
-tar -xf filebeat-$download.tar.gz -C /opt/sh/filebeat --strip-components 1 && \
-rm -rf /opt/sh/filebeat-$download.tar.gz
+ARG arm_download=7.15.2-linux-arm64
+
+RUN if [[ "$TARGETARCH" = "amd64" ]]; \
+    then download=$amd_download; \
+    else download=$arm_download; \
+    fi && \
+    wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-$download.tar.gz && \
+    mkdir /opt/sh/filebeat && \
+    tar -xf filebeat-$download.tar.gz -C /opt/sh/filebeat --strip-components 1 && \
+    rm -rf /opt/sh/filebeat-$download.tar.gz;
 
 WORKDIR /opt/sh/filebeat

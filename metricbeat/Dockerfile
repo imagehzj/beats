@@ -4,11 +4,17 @@ LABEL maintainer="shoothzj@gmail.com"
 
 ENV METRICBEAT_HOME /opt/sh/metricbeat
 
-ARG download=7.14.0-linux-x86_64
+ARG amd_download=7.15.2-linux-x86_64
 
-RUN wget https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-$download.tar.gz && \
-mkdir /opt/sh/metricbeat && \
-tar -xf metricbeat-$download.tar.gz -C /opt/sh/metricbeat --strip-components 1 && \
-rm -rf /opt/sh/metricbeat-$download.tar.gz
+ARG arm_download=7.15.2-linux-arm64
+
+RUN if [[ "$TARGETARCH" = "amd64" ]]; \
+    then download=$amd_download; \
+    else download=$arm_download; \
+    fi && \
+    wget https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-$download.tar.gz && \
+    mkdir /opt/sh/metricbeat && \
+    tar -xf metricbeat-$download.tar.gz -C /opt/sh/metricbeat --strip-components 1 && \
+    rm -rf /opt/sh/metricbeat-$download.tar.gz
 
 WORKDIR /opt/sh/metricbeat
