@@ -4,9 +4,9 @@ LABEL maintainer="shoothzj@gmail.com"
 
 ENV PACKETBEAT_HOME /opt/sh/packetbeat
 
-ARG amd_download=7.15.2-linux-x86_64
+ARG amd_download=7.17.1-linux-x86_64
 
-ARG arm_download=7.15.2-linux-arm64
+ARG arm_download=7.17.1-linux-arm64
 
 RUN if [[ "$TARGETARCH" = "amd64" ]]; \
     then download=$amd_download; \
